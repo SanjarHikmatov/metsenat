@@ -1,15 +1,12 @@
-from rest_framework.views import APIView
 from apps.general.models import University, PaymeMethod
 from apps.general.serializers import UniversitySerializer, PaymeMethodSerializer
 from rest_framework import generics
-from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 
-class UniversityListAPIView(APIView):
-
-    def get(self, request):
-        university = University.objects.all()
-        serializer = UniversitySerializer(university, many=True)
-        return Response(serializer.data)
+class UniversityListAPIView(generics.ListAPIView):
+    queryset = University.objects.all()
+    serializer_class = UniversitySerializer
+    filterset_fields = ['name']
 
 class UniversityCreateAPIView(generics.CreateAPIView):
     queryset = University.objects.all()
@@ -27,7 +24,7 @@ class UniversityDeleteAPIView(generics.DestroyAPIView):
 class PaymentMethodListAPIView(generics.ListAPIView):
     queryset = PaymeMethod.objects.all()
     serializer_class = PaymeMethodSerializer
-
+    filterset_fields = ['name']
 
 class PaymentMethodCreateAPIView(generics.CreateAPIView):
     queryset = PaymeMethod.objects.all()

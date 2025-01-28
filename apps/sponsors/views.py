@@ -1,42 +1,45 @@
 from rest_framework.response import Response
-from rest_framework import views, generics
+from rest_framework import views, generics, status
+from rest_framework.views import APIView
+
 from apps.sponsors.models import StudentSponsor
-from apps.sponsors.serializers import StudentSponsorSerializer
+from apps.sponsors.serializers import StudentSponsorSerializer, SponsorUpdateSerializer
 
 
-class SponsorViewList(views.APIView):
-
-    def get(self, request):
-        sponsors = StudentSponsor.objects.order_by('id')
-        serializer = StudentSponsorSerializer(sponsors, many=True)
+class StudentSponsorListAPIView(views.APIView):
+    def get(self, request, *args, **kwargs):
+        queryset = StudentSponsor.objects.order_by('id')
+        serializer = StudentSponsorSerializer(queryset, many=True)
         return Response(serializer.data)
+
+class  StudentSponsorCreateAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = StudentSponsorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SponsorUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = StudentSponsor.objects.all()
-    serializer_class = StudentSponsorSerializer
+    serializer_class = SponsorUpdateSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SponsorDeleteAPIView(generics.DestroyAPIView):
+
+class StudentSponsorDeleteAPIView(generics.DestroyAPIView):
     queryset = StudentSponsor.objects.all()
     serializer_class = StudentSponsorSerializer
 
-class StudentListAPIView(views.APIView):
-    def get(self, request):
-        students = StudentSponsor.objects.order_by('id')
-        serializer = StudentSponsorSerializer(students, many=True)
-        return Response(serializer.data)
-class StudentCreateAPIView(generics.CreateAPIView):
-    queryset = StudentSponsor.objects.all()
-    serializer_class = StudentSponsorSerializer
-
-class StudentUpdateAPIView(generics.RetrieveUpdateAPIView):
-    queryset = StudentSponsor.objects.all()
-    serializer_class = StudentSponsorSerializer
-
-class StudentDeleteAPIView(generics.DestroyAPIView):
-    queryset = StudentSponsor.objects.all()
-    serializer_class = StudentSponsorSerializer
 
 
 

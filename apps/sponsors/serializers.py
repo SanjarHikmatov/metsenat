@@ -2,14 +2,16 @@ from rest_framework import serializers
 from apps.sponsors.models import StudentSponsor
 
 
-class SponsorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = StudentSponsor
-        fields = ['sponsor', 'amount']
-        exclude = ('student',)
 
 class StudentSponsorSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentSponsor
-        fields = ['student', 'amount']
-        exclude = ('sponsor',)
+        fields = ['sponsor', 'student', 'amount',]
+
+class SponsorUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentSponsor
+        fields = ['sponsor', 'amount','student',]
+
+        sponsor = serializers.PrimaryKeyRelatedField(queryset=StudentSponsor.objects.all())
+        student = serializers.PrimaryKeyRelatedField(read_only=True)

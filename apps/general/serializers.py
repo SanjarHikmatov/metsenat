@@ -5,10 +5,10 @@ from apps.general.models import University, PaymeMethod
 class UniversitySerializer(serializers.ModelSerializer):
     class Meta:
         model = University
-        fields = '__all__'
+        fields = ['name','id']
 
 
 class PaymeMethodSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymeMethod
-        fields = '__all__'
+        fields = ['name', 'id']

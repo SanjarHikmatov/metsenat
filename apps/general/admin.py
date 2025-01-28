@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from apps.general.models import University, PaymeMethod
+
+admin.site.register(University)
+
+admin.site.register(PaymeMethod)
