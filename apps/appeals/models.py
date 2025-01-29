@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator
@@ -11,7 +12,17 @@ from apps.general.validation_call_number import uzb_phone_number_validators
 
 class Appeal(BaseModel):
 
+    class AppealStatus(models.TextChoices):
+        NEW = 'new', 'New'
+        MODERATED = 'moderated', 'Moderated'
+        VERIFIED = 'verified', 'Verified'
 
+    sponsor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name='appeals_sponsor',
+        verbose_name='Sponsor',
+    )
     amount = models.DecimalField(
         max_digits=50,
         decimal_places=2,
@@ -26,15 +37,31 @@ class Appeal(BaseModel):
         related_name='pay_method', help_text='Choose the pay method'
     )
 
-
     phone_number = models.CharField(
         max_length=13,
         validators=[uzb_phone_number_validators],
         help_text='Enter lake this Call number +998 99 999 99 99'
 
     )
-    full_name = models.CharField(max_length=255, help_text='Please enter Full Name')
-    organization = models.CharField(max_length=255, help_text='Enter your Organization')
+    status = models.CharField(
+        max_length=25,
+        choices=AppealStatus.choices,
+        default=AppealStatus.NEW,
+    )
+    full_name = models.CharField(
+        max_length=255,
+        help_text='Please enter Full Name'
+    )
+    organization = models.CharField(
+        max_length=255,
+        help_text='Enter your Organization'
+    )
+    available = models.DecimalField(
+        max_digits=50,
+        decimal_places=2,
+        default=Decimal('0'),
+        validators=[MinValueValidator(Decimal('0'))],
+    )
     slug = models.SlugField(max_length=100, unique=True)
 
     def save(self, *args, **kwargs):

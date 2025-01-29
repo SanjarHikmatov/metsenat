@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.appeals.views import *
+from apps.appeals.views import AppealListAPIView,AppealUpdateAPIView,AppealCreateAPIView,AppealDeleteAPIView
 
 urlpatterns = [
     path('', AppealListAPIView.as_view(), name='appeal-list'),

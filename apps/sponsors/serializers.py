@@ -8,10 +8,10 @@ class StudentSponsorSerializer(serializers.ModelSerializer):
         model = StudentSponsor
         fields = ['sponsor', 'student', 'amount',]
 
-class SponsorUpdateSerializer(serializers.ModelSerializer):
+class StudentSponsorUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentSponsor
-        fields = ['sponsor', 'amount','student',]
+        fields = ['id','sponsor','student', 'amount',]
 
         sponsor = serializers.PrimaryKeyRelatedField(queryset=StudentSponsor.objects.all())
         student = serializers.PrimaryKeyRelatedField(read_only=True)

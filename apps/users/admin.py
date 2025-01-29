@@ -6,6 +6,7 @@ from apps.users.models import CustomUser
 class CustomUserAdmin(UserAdmin):
     filter_horizontal = []
 
+    readonly_fields = ()
     fieldsets = (
         (None, {"fields": ("phone_number", "password")}),
         (
@@ -22,7 +23,7 @@ class CustomUserAdmin(UserAdmin):
         ),
         (
             # _("Permissions",)
-                  "Permissions",
+            "Permissions",
             {
                 "fields": (
                     "is_active",
@@ -48,4 +49,3 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ("role",)
     search_fields = ("first_name", "last_name", "phone_number", "role")
     ordering = ("phone_number",)
-    readonly_fields = ('id', 'available', 'balance', 'status','password',)

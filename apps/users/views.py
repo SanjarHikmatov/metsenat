@@ -9,36 +9,19 @@ class UserListCreateAPIView(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
-    filterset_fields = ['first_name',
-                        'last_name',
-                        'phone_number',
-                        'status',
-                        'available',
-                        ]
-    search_fields = ['first_name',
-                     'last_name',
-                     'phone_number',
-                     'created_at',
-                     'available',
-                     'status',
-                     ]
+    filterset_fields = ['first_name', 'last_name','phone_number']
+    search_fields = ['first_name','last_name',]
 
-    ordering_fields = ['first_name',
-                       'last_name',
-                        'phone_number',
-                       'status',
-                       'available',
-                       'balance',
-                       ]
-
-
-
-
+    ordering_fields = ['first_name','last_name',]
 
 
 class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = CustomUser.objects.all().order_by('-pk')
+    queryset = CustomUser.objects.all().order_by('-created_at')
     serializer_class = UserDetailSerializer
+
+
+
+
 
 
 

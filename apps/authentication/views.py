@@ -37,3 +37,24 @@
 #             return Response({'otp_code': 'Code send successfully'}, status=status.HTTP_200_OK)
 #         return Response({'otp_code': 'Code send failed'}, status=status.HTTP_400_BAD_REQUEST)
 """
+from django.contrib.auth import authenticate
+from rest_framework import views
+from rest_framework import exceptions
+from rest_framework.response import Response
+
+
+class LoginAPIViews(views.APIView):
+    def post(self, request, *args, **kwargs):
+        username, password = request.data['username'], request.data['password']
+        if username and password:
+            user = authenticate(username=username, password=password)
+
+            if user is None:
+                raise exceptions.AuthenticationFailed('invalid username or password')
+            from rest_framework.authtoken.models import Token
+            token_obj, _ = Token.objects.get_or_create(user=user)
+
+        else:
+            raise exceptions.AuthenticationFailed('invalid username or password')
+        return Response({'token': token_obj.key})
+

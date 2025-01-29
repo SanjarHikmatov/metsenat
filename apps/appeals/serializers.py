@@ -12,6 +12,7 @@ class AppealSerializer(serializers.ModelSerializer):
             'pay_method',
             'amount',
             'organization',
+            'sponsor',
         ]
 
 

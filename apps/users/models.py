@@ -5,6 +5,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import BaseUserManager
 from django.core.validators import MinValueValidator, RegexValidator
 
+from apps.general.models import University
 from apps.utils.models.base_model import BaseModel
 from apps.general.service import user_photo_location
 from django.core.exceptions import ValidationError
@@ -36,24 +37,27 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(BaseModel, PermissionsMixin):
 
-    class UserType(models.TextChoices):
+    class Role(models.TextChoices):
         sponsor = 'sponsor', 'Sponsor'
         student = 'student', 'Student'
         admin = 'admin', 'Admin'
 
+
     class StudentDegree(models.TextChoices):
         BACHELOR = 'bachelor', 'Bachelor'
         MASTER = 'master', 'Master'
+        EMPTY = 'empty', 'Empty'
 
-    class Status(models.TextChoices):
-        NEW = 'new', 'New'
-        MODERATED = 'moderated', 'Moderated'
-        VERIFIED = 'verified', 'Verified'
 
     class LegalType(models.TextChoices):
-        personal = 'personal', 'Personal'
-        legal = 'legal' 'Legal'
+        JURIDIC = 'juridic', 'Juridic'
+        PHYSICAL = 'physical', 'Physical'
 
+    user_type = models.CharField(
+        max_length=25,
+        choices=LegalType.choices,
+        default=LegalType.JURIDIC,
+    )
 
 
     first_name = models.CharField(
@@ -86,17 +90,13 @@ class CustomUser(BaseModel, PermissionsMixin):
 
     # ======== Extra fields ===================
     university = models.ForeignKey(
-        'general.University',
+        University,
         on_delete=models.PROTECT,
         blank=True,
-        null=True
+        null=True,
+        related_name='student_university'
     )
-    contract_amount = models.DecimalField(
-        max_digits=30,
-        decimal_places=2,
-        validators=[MinValueValidator(0)],
-        default=Decimal(0)
-    )
+
     balance = models.DecimalField(
         max_digits=50,
         decimal_places=2,
@@ -110,29 +110,17 @@ class CustomUser(BaseModel, PermissionsMixin):
         default=Decimal(0),
         validators=[MinValueValidator(Decimal(0))],
     )
-    user_type = models.CharField(
+    role = models.CharField(
         max_length=10,
-        choices=UserType.choices,
-        default=UserType.sponsor
+        choices=Role.choices,
+
     )
-    status = models.CharField(
-        max_length=10,
-        choices=Status.choices,
-        default=Status.NEW,
-        editable=False
-    )
+
     student_degree = models.CharField(
         max_length=50,
         choices=StudentDegree.choices,
-        null=True
+        default=StudentDegree.EMPTY,
     )
-
-    legal_type = models.CharField(
-        max_length=15,
-        choices=LegalType.choices,
-        default=LegalType.personal
-    )
-    role = models.CharField(max_length=50)
 
     username = None
 
@@ -142,13 +130,25 @@ class CustomUser(BaseModel, PermissionsMixin):
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def clean(self):
-        if self.user_type == CustomUser.UserType.student and not self.university:
-            raise ValidationError({'university': "this field must be blank"})
+        if (
+                not self.Role.student
+                or not
+                self.university
+                or not
+                self.student_degree
+
+        ):
+            raise ValidationError({'student': "You not entered your Role should student and you enter university and student degree."})
 
     def __str__(self):
-        return f'User name {self.first_name},  user type {self.get_user_type_display()}'
-
-
-
+        return f'User name {self.first_name},  user type {self.get_role_display()}'
+    #
+    # @property
+    # def is_anonymous(self):
+    #     return False
+    #
+    # @property
+    # def is_authenticated(self):
+    #     return True
 
 

@@ -1,11 +1,9 @@
 import uuid
-
 from django.conf import settings
-from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 
 
-class BaseModel(AbstractBaseUser):
+class BaseModel(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(
@@ -22,6 +20,7 @@ class BaseModel(AbstractBaseUser):
         related_name="+",
         editable=False,
         null=True,
+        blank=True
     )
     updated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, editable=False,

@@ -30,5 +30,5 @@ urlpatterns = [
     path('generals/', include('apps.general.urls'), name='generals'),
 
     path('student_sponsors/', include('apps.sponsors.urls'), name="student_sponsors"),
-
+    path('token_api_login', include('apps.authentication.urls'), name='token_api_login'),
 ]

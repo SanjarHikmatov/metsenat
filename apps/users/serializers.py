@@ -14,17 +14,17 @@ class StudentSerializer(serializers.ModelSerializer):
     sponsors = SponsorSerializer(many=True, read_only=True)
     class Meta:
         model = settings.AUTH_USER_MODEL
-        fields = ['id', 'first_name', 'last_name', 'phone_number', 'sponsors']
+        fields = ['id', 'first_name', 'last_name', 'phone_number', 'sponsors', 'student_dee']
 
 
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id','first_name', 'last_name', 'password',
+        fields = ['id','first_name', 'last_name',
                   'user_type', 'phone_number', 'role',
-                  'contract_amount', 'university', 'student_degree',
-                  'available', 'balance', 'status'
+                  'university', 'student_degree',
+                  'available', 'balance',
                   ]
 
 
