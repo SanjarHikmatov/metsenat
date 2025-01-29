@@ -142,13 +142,13 @@ class CustomUser(BaseModel, PermissionsMixin):
 
     def __str__(self):
         return f'User name {self.first_name},  user type {self.get_role_display()}'
-    #
-    # @property
-    # def is_anonymous(self):
-    #     return False
-    #
-    # @property
-    # def is_authenticated(self):
-    #     return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    @property
+    def is_authenticated(self):
+        return True
 
 
