@@ -1,12 +1,12 @@
 # metsenat
 
 ## 1. Clone the Repository
-git clone https://github.com/SanjarHikmatov/metsenat
+git clone https://github.com/SanjarHikmatov/metsenat.git
 ## 2. Change Directory
 cd metsenat
 ## 3. Create .env file using .env.example
 cp .env_example .env
-## 4. Create a virtual environment using Python 3.10 
+## 4. Create a virtual environment using Python 3.12
 python3 -m venv venv 
 ## 5. Activate the Virtual Environment On Linux/MacOS
 source venv/bin/activate

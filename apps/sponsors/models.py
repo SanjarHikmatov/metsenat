@@ -29,17 +29,11 @@ class StudentSponsor(BaseModel):
         validators=[MinValueValidator(Decimal("0"))],
     )
 
-    def clean(self):
 
-        if not self.amount:
-            raise exceptions.ValidationError({'amount': "This field required"})
-
+    def save(self, *args, **kwargs):
         if self.amount and self.amount > self.sponsor.available:
             raise exceptions.ValidationError(
                 {f'available_balance': f"amount more then sponsor available balance ({self.amount} > {self.sponsor.available})"})
-
-    def save(self, *args, **kwargs):
-        self.clean()
         super(StudentSponsor, self).save(*args, **kwargs)
 
 

@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from django.utils.timezone import now
 from apps.sponsors.models import StudentSponsor
 from rest_framework.exceptions import ValidationError

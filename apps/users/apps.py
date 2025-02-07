@@ -8,3 +8,4 @@ class UsersConfig(AppConfig):
 
     def ready(self):
         import apps.general.signals
+        import apps.users.signals

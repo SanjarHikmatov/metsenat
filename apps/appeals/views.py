@@ -7,7 +7,7 @@ from apps.appeals.serializers import AppealSerializer, AppealUpdateSerializer
 
 
 class AppealListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Appeal.objects.order_by('-created_at')
+    queryset = Appeal.objects.all().order_by('-created_at')
     serializer_class = AppealSerializer
     filterset_fields = {
         'amount': ['gte', 'lte'],
@@ -15,7 +15,6 @@ class AppealListCreateAPIView(generics.ListCreateAPIView):
         'is_verified': ['exact'],
         'pay_method': ['exact'],
         'sponsor': ['exact'],
-        'available': ['gte', 'lte'],
         }
 
     search_fields = ['full_name','phone_number']
@@ -25,12 +24,12 @@ class AppealListCreateAPIView(generics.ListCreateAPIView):
         'phone_number', 'sponsor',
         'created_at', 'is_verified',
         'pay_method', 'university'
-        'available', 'status',
+         'status',
         ]
     pagination_class = LimitOffsetPagination
 
 class AppealRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Appeal.objects.order_by('-created_at')
+    queryset = Appeal.objects.all().order_by('-created_at')
     serializer_class = AppealUpdateSerializer
 
     filterset_fields = {
@@ -39,7 +38,6 @@ class AppealRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         'is_verified': ['exact'],
         'pay_method': ['exact'],
         'sponsor': ['exact'],
-        'available': ['gte', 'lte'],
     }
 
     search_fields = ['full_name', 'phone_number']
@@ -49,7 +47,6 @@ class AppealRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         'phone_number', 'sponsor',
         'created_at', 'is_verified',
         'pay_method', 'university'
-        'available', 'status',
     ]
 
 

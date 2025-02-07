@@ -12,10 +12,10 @@ from apps.appeals.models import Appeal
 #     )
 #     if sponsor_appeals.exists():
 #         from django.db.models import F
-#         sponsor_appeals.balance = F('balance') + sender.amount
+#         sponsor_appeals.balance = F('balance') + instance.amount
 #         instance.sponsor.save(update_fields=['balance'])
-
-
+#
+#
 
 
 

@@ -1,14 +1,14 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from decimal import Decimal
+from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.base_user import BaseUserManager
 from django.core.validators import MinValueValidator, RegexValidator
+from django.contrib.auth.models import AbstractUser, Permission, Group
 
 from apps.general.models import University
 from apps.utils.models.base_model import BaseModel
 from apps.general.service import user_photo_location
-from django.core.exceptions import ValidationError
 from apps.general.validation_call_number import uzb_phone_number_validators
 
 
@@ -49,15 +49,15 @@ class CustomUser(BaseModel, AbstractUser):
         EMPTY = 'empty', 'Empty'
 
 
-    class UserType(models.TextChoices):
+    class Type(models.TextChoices):
         JURIDIC = 'juridic', 'Juridic'
         PHYSICAL = 'physical', 'Physical'
         EMPTY = 'empty', 'Empty'
 
-    user_type = models.CharField(
+    type = models.CharField(
         max_length=25,
-        choices=UserType.choices,
-        default=UserType.JURIDIC,
+        choices=Type.choices,
+        default=Type.JURIDIC,
     )
 
 
@@ -96,6 +96,7 @@ class CustomUser(BaseModel, AbstractUser):
         null=True,
         related_name='student_university'
     )
+
     # ======== Extra fields ===================
 
     balance = models.DecimalField(
@@ -130,18 +131,40 @@ class CustomUser(BaseModel, AbstractUser):
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = ['first_name', 'last_name',]
 
+    def add_to_group(self):
+        group, created = Group.objects.get_or_create(name=self.role)
+        if created:
+            match self.role:
+                case self.Role.ADMIN:
+                    perms = Permission.objects.all()
+                case self.Role.SPONSOR:
+                    perms = Permission.objects.filter(
+                        models.Q(codename__startswith="view_")
+                        |
+                        models.Q(codename__in=["add_appeal", "change_appeal", "delete_appeal"])
+                    )
 
+                case self.Role.STUDENT:
+                    perms = Permission.objects.filter(codename__startswith="view_")
+                case _:
+                    perms = []
+
+            group.permissions.set([p.id for p in perms])
+        self.groups.set([group])
+        return group
 
     def save(self, *args, **kwargs):
 
         if self.is_superuser:
             self.role = self.Role.ADMIN
 
-        super(CustomUser, self).save(*args, **kwargs)
+        if self.role == self.Role.STUDENT:
+            self.balance = self.university.contract_amount
+        super().save(*args, **kwargs)
 
 
     def __str__(self):
-        return (f'User name {self.first_name, self.last_name},user type {self.get_user_type_display()}, balance {self.balance}, avilable {self.available}')
+        return (f'User name {self.first_name},user type {self.get_type_display()}, balance {self.balance}, avilable {self.available}')
 
 
 

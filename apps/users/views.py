@@ -1,9 +1,7 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
 
 from apps.users.models import CustomUser
 from apps.users.serializers import UserSerializer, UserDetailSerializer
-
 
 
 
@@ -11,9 +9,10 @@ class UserListCreateAPIView(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all().order_by('-created_at')
     serializer_class = UserSerializer
 
+
     filterset_fields = {
         'university': ['exact'],
-        'user_type': ['exact'],
+        'type': ['exact'],
         'role': ['exact'],
         'balance': ['gte', 'lte'],
         'available': ['gte', 'lte'],
@@ -27,7 +26,9 @@ class UserListCreateAPIView(generics.ListCreateAPIView):
         'first_name','last_name',
         'phone_number', 'balance',
         'available', 'status',
-        'university']
+        'university'
+    ]
+
 
 
 class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):

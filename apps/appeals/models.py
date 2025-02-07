@@ -5,6 +5,7 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 from apps.general.models import PaymeMethod
+from apps.users.models import CustomUser
 from apps.utils.models.base_model import BaseModel
 from apps.general.validation_call_number import uzb_phone_number_validators
 
@@ -21,7 +22,7 @@ class Appeal(BaseModel):
         on_delete=models.PROTECT,
         related_name='appeals_sponsor',
         verbose_name='Sponsor',
-        limit_choices_to={'role': 'sponsor'}
+        limit_choices_to={'role': CustomUser.Role.SPONSOR}
     )
     amount = models.DecimalField(
         max_digits=50,
@@ -33,7 +34,8 @@ class Appeal(BaseModel):
     pay_method = models.ForeignKey(
         PaymeMethod,
         on_delete=models.PROTECT,
-        related_name='pay_method', help_text='Choose the pay method'
+        related_name='appeal_pay_method',
+        help_text='Choose the pay method'
     )
 
     phone_number = models.CharField(

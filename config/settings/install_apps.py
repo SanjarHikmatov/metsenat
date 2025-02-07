@@ -14,7 +14,8 @@ LOCAL_APPS = [
     'apps.sponsors',
     'apps.appeals',
     'apps.authentication',
-
+    'apps.permissions',
+    'drf_yasg',
 ]
 
 
