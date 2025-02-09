@@ -164,7 +164,13 @@ class CustomUser(BaseModel, AbstractUser):
 
 
     def __str__(self):
-        return (f'User name {self.first_name},user type {self.get_type_display()}, balance {self.balance}, avilable {self.available}')
+        return (
+            f'User name {self.first_name},'
+            f'user type {self.get_type_display()}, '
+            f'balance {self.balance}, '
+            f'avilable {self.available}'
+            f'Phone number {self.phone_number}'
+        )
 
 
 
