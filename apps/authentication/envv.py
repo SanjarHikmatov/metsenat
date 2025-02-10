@@ -1,2 +1,4 @@
-EMAIL = 'hikmatozsanjar885@gmail.com'
-PASSWORD = "vrAHv0bTSilhEYHFcn6kpSZ0xNYNr6oTg7PjNbuK"
+from config.settings import EMAIL, PASSWORD
+
+EMAIL = EMAIL
+PASSWORD = PASSWORD
