@@ -1,5 +1,5 @@
 import requests
-from apps.authentication.envv import EMAIL, PASSWORD
+from config.settings import EMAIL, PASSWORD
 
 
 class EskizUz:

@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from pathlib import Path
 from dotenv import load_dotenv
+# from config.settings import CORS_ALLOWED_ORIGINS
 import os
 
-from apps.authentication.envv import PASSWORD
+# from config.settings import CORS_ALLOWED_ORIGINS
 
 load_dotenv()
 
@@ -27,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 EMAIL = os.environ.get('EMAIL')
-PASSWORD .os.environ.get('PASSWORD')
+PASSWORD = os.environ.get('PASSWORD')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -42,11 +43,17 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:8000'
+
 ]
 
 # Application definition
+CORS_ALLOW_ORIGINS = [
+    'http://localhost:5173',
+    "https://7e96-94-158-57-109.ngrok-free.app",
+]
 
-
+# Agar cookie va auth token ishlatayotgan bo‘lsangiz:
+# CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'config.urls'
 

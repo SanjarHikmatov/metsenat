@@ -6,17 +6,18 @@ from rest_framework import serializers
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import ValidationError
-from apps.authentication.envv import EMAIL, PASSWORD
-from apps.authentication.eskiz_uz import EskizUz
+# from apps.authentication.eskiz_uz import EskizUz
 from apps.users.models import CustomUser
+# from config.settings import EMAIL, PASSWORD
 
-eskiz = EskizUz(email=EMAIL, password=PASSWORD)
+# eskiz = EskizUz(email=EMAIL, password=PASSWORD)
 
 def send_code(phone_number, message):
+    # print(f'Sending code to {phone_number}, message: {message}')
+    # message = 'Bu Eskiz dan test'
+    # eskiz.send_message(message=message, phone_number=phone_number)
     print(f'Sending code to {phone_number}, message: {message}')
-    message = 'Bu Eskiz dan test'
-    eskiz.send_message(message=message, phone_number=phone_number)
-    print(f'Sending code to {phone_number}, message: {message}')
+    print(phone_number, message)
     return phone_number
 
 

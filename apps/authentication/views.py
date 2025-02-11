@@ -1,14 +1,11 @@
-from rest_framework import exceptions
-from django.contrib.auth import logout
 from rest_framework import permissions, status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
-from yaml import serialize
 
-# from .serializers import UserLogoutSerializer
-from apps.authentication.serializers import SendAuthCodeSerializer, LoginSerializer, UserLogoutSerializer
+from apps.authentication.serializers import (
+    SendAuthCodeSerializer,
+    LoginSerializer,
+    UserLogoutSerializer)
 
 
 class AuthCodeConfirmAPIView(CreateAPIView):

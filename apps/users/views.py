@@ -1,7 +1,7 @@
 from rest_framework import generics
 
 from apps.users.models import CustomUser
-from apps.users.serializers import UserSerializer, UserDetailSerializer
+from apps.users.serializers import UserSerializer
 
 
 
@@ -28,16 +28,6 @@ class UserListCreateAPIView(generics.ListCreateAPIView):
         'available', 'status',
         'university'
     ]
-
-
-
-class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = CustomUser.objects.all().order_by('-created_at')
-    serializer_class = UserDetailSerializer
-
-
-
-
 
 
 

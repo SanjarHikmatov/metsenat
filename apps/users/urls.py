@@ -1,15 +1,7 @@
 from django.urls import path
-from apps.users.views import (
-    UserListCreateAPIView,
-    UserRetrieveUpdateDestroyAPIView
-)
 
-
-
-
+from apps.users.views import UserListCreateAPIView
 
 urlpatterns = [
     path('', UserListCreateAPIView.as_view(), name='user-list'),
-    path('detail/<str:pk>/', UserRetrieveUpdateDestroyAPIView.as_view(), name='student-retrieve'),
-
 ]

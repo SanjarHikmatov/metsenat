@@ -57,7 +57,7 @@ class CustomUser(BaseModel, AbstractUser):
     type = models.CharField(
         max_length=25,
         choices=Type.choices,
-        default=Type.JURIDIC,
+        default=Type.EMPTY,
     )
 
 
@@ -159,16 +159,20 @@ class CustomUser(BaseModel, AbstractUser):
             self.role = self.Role.ADMIN
 
         if self.role == self.Role.STUDENT:
-            self.balance = self.university.contract_amount
+
+            if self.university:
+                self.balance = self.university.contract_amount
+            else:
+                self.balance = 0
         super().save(*args, **kwargs)
 
 
     def __str__(self):
         return (
             f'User name {self.first_name},'
-            f'user type {self.get_type_display()}, '
+            f'user type {self.get_type_display()},'
             f'balance {self.balance}, '
-            f'avilable {self.available}'
+            f'available {self.available}'
             f'Phone number {self.phone_number}'
         )
 

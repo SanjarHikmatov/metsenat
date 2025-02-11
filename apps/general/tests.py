@@ -1,13 +1,11 @@
-# class EskizSMSProwayder:
-#     url = 'notify.eskiz.uz/api/auth/login'
-#     message = 'token generated'
+# word1 = input("Bir: ")
+# word2 = input("Ikki: ")
 #
-#     def __init__(self, email, password):
-#         self.password = password
-#         self.email = email
+# s = len
 #
+# new_word1 = word1[:-1] + word2[-1]
+# new_word2 = word2[:-1] + word1[-1]
+# print(f'natija1 {new_word1} = {word1[:-1]} + {word2[-1]}')
+# print(f'natija1 {new_word2} = {word2[:-1]} + {word1[-1]}')
 #
-#
-#
-#     def template_sms_sender(self):
-#
+# print("Yangi so‘zlar:", new_word1, new_word2)
