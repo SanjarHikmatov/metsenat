@@ -1,5 +1,4 @@
 import requests
-from config.settings import EMAIL, PASSWORD
 
 
 class EskizUz:
@@ -78,10 +77,4 @@ class EskizUz:
 
         res = self.__request_post(url=url, method='post', data=data)
         return True
-#
-# eskiz_uz = EskizUz(email=EMAIL, password=PASSWORD)
-#
-# try:
-#     print(eskiz_uz.send_message(message='Это тест от Eskiz', phone_number='+998974559995'))
-# except ValueError as e:
-#     print(e)
+
