@@ -11,4 +11,4 @@ from apps.users.models import CustomUser
 def post_save_user(instance: CustomUser, created: bool, **kwargs):
     if created:
         instance.add_to_group()
-print('hello world')
+print('hello world yana yangi xatolik')
